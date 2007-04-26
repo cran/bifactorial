@@ -6,7 +6,7 @@ using namespace std;
 #include <valarray> 
 using std::valarray;
 #include <time.h>
-#include "Rcpp.hpp"
+#include "Rcpp.h"
 //Determine largest integer smaller than x///////////////////////////
 int gaussklammer(double x){
   int k=0;

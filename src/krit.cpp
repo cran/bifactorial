@@ -1,8 +1,8 @@
 #include <iostream>
 #include <math.h>
 #include <time.h>
-#include "Rcpp.hpp"
-#include "misc.hpp"
+#include "Rcpp.h"
+#include "misc.h"
 #include <vector>
 //Implementations of bootstrap algorithms for simultaneous confidence intervals
 //Confidence intervals based on Student's t-test in bifactorial designs

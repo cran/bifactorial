@@ -14,7 +14,7 @@
 
 
 
-#include "Rcpp.hpp"
+#include "Rcpp.h"
 
 RcppParams::RcppParams(SEXP params) {
     if(!isNewList(params))

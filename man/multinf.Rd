@@ -22,7 +22,8 @@
 }
 \usage{
 mintest(C,test=NULL,method="bootstrap",nboot=NULL,simerror=NULL,...)
-margint(C,test=NULL,method="bootstrap",nboot=NULL,simerror=NULL,alpha=0.05,...)
+margint(C,test=NULL,method="bootstrap",nboot=NULL,simerror=NULL,
+        alpha=0.05,...)
 }
 \arguments{
   \item{C}{An object of class \code{carpet} or \code{cube}.}

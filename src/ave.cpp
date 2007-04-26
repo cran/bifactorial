@@ -1,8 +1,8 @@
 #include <iostream>
 #include <math.h>
 #include <time.h>
-#include "Rcpp.hpp"
-#include "misc.hpp"
+#include "Rcpp.h"
+#include "misc.h"
 #include <vector>
 //Implementations of bootstrap algorithms for the AVE-test (Hung, 2000)
 //AVE-test based on Student's t-test in bifactorial designs
