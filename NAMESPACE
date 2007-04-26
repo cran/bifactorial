@@ -1,0 +1,28 @@
+useDynLib(bifactorial)
+
+import(methods)
+importFrom(graphics,plot)
+importFrom(lattice,wireframe)
+importFrom(lattice,cloud)
+importFrom(multcomp,glht)
+
+exportClasses(
+              mintest,
+              margint,
+              avetest,
+              maxtest,
+              carpet,
+              cube
+             )
+
+exportMethods(
+              mintest,
+              margint,
+              avetest,
+              maxtest,
+              carpet,
+              cube,
+              show,
+              summary,
+              plot
+              )
