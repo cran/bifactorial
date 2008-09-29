@@ -13,8 +13,8 @@
 // details.
 
 
-
 #include "Rcpp.h"
+#include <cstring>
 
 RcppParams::RcppParams(SEXP params) {
     if(!isNewList(params))
@@ -244,8 +244,8 @@ RcppMatrix<T>::RcppMatrix(SEXP mat) {
     dim1 = INTEGER(dimAttr)[0];
     dim2 = INTEGER(dimAttr)[1];
 
-    // We guard against  the possibility that R might pass an integer matrix.
-    // Can be prevented using R code: temp <- as.double(a), dim(temp) <- dim(a)
+    //We guard against the possibility that R might pass an integer matrix.
+    //Can be prevented using R code: temp<-as.double(a), dim(temp)<-dim(a)
     int i,j;
     int isInt = isInteger(mat);
     T *m = (T *)R_alloc(dim1*dim2, sizeof(T));
@@ -265,27 +265,27 @@ RcppMatrix<T>::RcppMatrix(SEXP mat) {
 }
 
 template <typename T>
-RcppMatrix<T>::RcppMatrix(int _dim1, int _dim2) {
-    dim1 = _dim1;
-    dim2 = _dim2;
-    int i,j;
-    T *m = (T *)R_alloc(dim1*dim2, sizeof(T));
-    a = (T **)R_alloc(dim1, sizeof(T *));
-    for(i = 0; i < dim1; i++)
-	a[i] = m + i*dim2;
-    for(i=0; i < dim1; i++)
-	for(j=0; j < dim2; j++)
-	    a[i][j] = 0;
+RcppMatrix<T>::RcppMatrix(int _dim1, int _dim2){
+  dim1 = _dim1;
+  dim2 = _dim2;
+  int i,j;
+  T *m = (T *)R_alloc(dim1*dim2, sizeof(T));
+  a = (T **)R_alloc(dim1, sizeof(T *));
+  for(i = 0; i < dim1; i++)
+    a[i] = m + i*dim2;
+  for(i=0; i < dim1; i++)
+    for(j=0; j < dim2; j++)
+      a[i][j] = 0;
 }
 
 
 template <typename T>
-T **RcppMatrix<T>::cMatrix() {
-    int i,j;
-    T *m = (T *)R_alloc(dim1*dim2, sizeof(T));
-    T **tmp = (T **)R_alloc(dim1, sizeof(T *));
-    for(i = 0; i < dim1; i++)
-	tmp[i] = m + i*dim2;
+T **RcppMatrix<T>::cMatrix(){
+  int i,j;
+  T *m = (T *)R_alloc(dim1*dim2, sizeof(T));
+  T **tmp = (T **)R_alloc(dim1, sizeof(T *));
+  for(i = 0; i < dim1; i++)
+    tmp[i] = m + i*dim2;
     for(i=0; i < dim1; i++)
 	for(j=0; j < dim2; j++)
 	    tmp[i][j] = a[i][j];
@@ -294,9 +294,9 @@ T **RcppMatrix<T>::cMatrix() {
 
 // For being faster while saving memory just return a pointer onto the object
 template <typename T>
-T **RcppMatrix<T>::ptOnMatrix() {
-    T **tmp = a;
-    return tmp;
+T **RcppMatrix<T>::ptOnMatrix(){
+  T **tmp = a;
+  return tmp;
 }                             
 
 
@@ -311,186 +311,179 @@ template class RcppMatrix<int>;
 template class RcppMatrix<double>;
 
 
-void RcppResultSet::add(string name, double x) {
-    SEXP value = PROTECT(allocVector(REALSXP, 1));
-    numProtected++;
-    REAL(value)[0] = x;
-    values.push_back(make_pair(name, value));
+void RcppResultSet::add(string name, double x){
+  SEXP value = PROTECT(allocVector(REALSXP, 1));
+  numProtected++;
+  REAL(value)[0] = x;
+  values.push_back(make_pair(name, value));
 }
 
-void RcppResultSet::add(string name, int i) {
-    SEXP value = PROTECT(allocVector(INTSXP, 1));
-    numProtected++;
-    INTEGER(value)[0] = i;
-    values.push_back(make_pair(name, value));
+void RcppResultSet::add(string name, int i){
+  SEXP value = PROTECT(allocVector(INTSXP, 1));
+  numProtected++;
+  INTEGER(value)[0] = i;
+  values.push_back(make_pair(name, value));
 }
 
 void RcppResultSet::add(string name, string strvalue) {
-    SEXP value = PROTECT(allocVector(STRSXP, 1));
-    numProtected++;
-    SET_STRING_ELT(value, 0, mkChar(strvalue.c_str()));
-    values.push_back(make_pair(name, value));
+  SEXP value = PROTECT(allocVector(STRSXP, 1));
+  numProtected++;
+  SET_STRING_ELT(value, 0, mkChar(strvalue.c_str()));
+  values.push_back(make_pair(name, value));
 }
 
 void RcppResultSet::add(string name, double *vec, int len) {
-    SEXP value = PROTECT(allocVector(REALSXP, len));
-    numProtected++;
-    for(int i = 0; i < len; i++)
-	REAL(value)[i] = vec[i];
-    values.push_back(make_pair(name, value));
+  SEXP value = PROTECT(allocVector(REALSXP, len));
+  numProtected++;
+  for(int i = 0; i < len; i++)
+    REAL(value)[i] = vec[i];
+  values.push_back(make_pair(name, value));
 }
 
 void RcppResultSet::add(string name, int *vec, int len) {
-    SEXP value = PROTECT(allocVector(INTSXP, len));
-    numProtected++;
-    for(int i = 0; i < len; i++)
-	INTEGER(value)[i] = vec[i];
-    values.push_back(make_pair(name, value));
+  SEXP value = PROTECT(allocVector(INTSXP, len));
+  numProtected++;
+  for(int i = 0; i < len; i++)
+    INTEGER(value)[i] = vec[i];
+  values.push_back(make_pair(name, value));
 }
 
 void RcppResultSet::add(string name, double **mat, int nx, int ny) {
-    SEXP value = PROTECT(allocMatrix(REALSXP, nx, ny));
-    numProtected++;
-    for(int i = 0; i < nx; i++)
-	for(int j = 0; j < ny; j++)
-	    REAL(value)[i + nx*j] = mat[i][j];
-    values.push_back(make_pair(name, value));
+  SEXP value = PROTECT(allocMatrix(REALSXP, nx, ny));
+  numProtected++;
+  for(int i = 0; i < nx; i++)
+    for(int j = 0; j < ny; j++)
+      REAL(value)[i + nx*j] = mat[i][j];
+  values.push_back(make_pair(name, value));
 }
 
 void RcppResultSet::add(string name, int **mat, int nx, int ny) {
-    SEXP value = PROTECT(allocMatrix(INTSXP, nx, ny));
-    numProtected++;
-    for(int i = 0; i < nx; i++)
-	for(int j = 0; j < ny; j++)
-	    INTEGER(value)[i + nx*j] = mat[i][j];
-    values.push_back(make_pair(name, value));
+  SEXP value = PROTECT(allocMatrix(INTSXP, nx, ny));
+  numProtected++;
+  for(int i = 0; i < nx; i++)
+    for(int j = 0; j < ny; j++)
+      INTEGER(value)[i + nx*j] = mat[i][j];
+  values.push_back(make_pair(name, value));
 }
 
 void RcppResultSet::add(string name, RcppVector<int>& vec) {
-    int len = vec.getLength();
-    int *a = vec.cVector();
-    SEXP value = PROTECT(allocVector(INTSXP, len));
-    numProtected++;
-    for(int i = 0; i < len; i++)
-	INTEGER(value)[i] = a[i];
-    values.push_back(make_pair(name, value));
+  int len = vec.getLength();
+  int *a = vec.cVector();
+  SEXP value = PROTECT(allocVector(INTSXP, len));
+  numProtected++;
+  for(int i = 0; i < len; i++)
+    INTEGER(value)[i] = a[i];
+  values.push_back(make_pair(name, value));
 }
 
 void RcppResultSet::add(string name, RcppVector<double>& vec) {
-    int len = vec.getLength();
-    double *a = vec.cVector();
-    SEXP value = PROTECT(allocVector(REALSXP, len));
-    numProtected++;
-    for(int i = 0; i < len; i++)
-	REAL(value)[i] = a[i];
-    values.push_back(make_pair(name, value));
+  int len = vec.getLength();
+  double *a = vec.cVector();
+  SEXP value = PROTECT(allocVector(REALSXP, len));
+  numProtected++;
+  for(int i = 0; i < len; i++)
+    REAL(value)[i] = a[i];
+  values.push_back(make_pair(name, value));
 }
 
 void RcppResultSet::add(string name, RcppMatrix<bool>& mat) {
-    int nx = mat.getDim1();
-    int ny = mat.getDim2();
-    bool **a = mat.cMatrix();
-    SEXP value = PROTECT(allocMatrix(INTSXP, nx, ny));
-    numProtected++;
-    for(int i = 0; i < nx; i++)
-	for(int j = 0; j < ny; j++)
-	    INTEGER(value)[i + nx*j] = a[i][j];
-    values.push_back(make_pair(name, value));
+  int nx = mat.getDim1();
+  int ny = mat.getDim2();
+  bool **a = mat.cMatrix();
+  SEXP value = PROTECT(allocMatrix(INTSXP, nx, ny));
+  numProtected++;
+  for(int i = 0; i < nx; i++)
+    for(int j = 0; j < ny; j++)
+      INTEGER(value)[i + nx*j] = a[i][j];
+  values.push_back(make_pair(name, value));
 }
 
 void RcppResultSet::add(string name, RcppMatrix<int>& mat) {
-    int nx = mat.getDim1();
-    int ny = mat.getDim2();
-    int **a = mat.cMatrix();
-    SEXP value = PROTECT(allocMatrix(INTSXP, nx, ny));
-    numProtected++;
-    for(int i = 0; i < nx; i++)
-	for(int j = 0; j < ny; j++)
-	    INTEGER(value)[i + nx*j] = a[i][j];
-    values.push_back(make_pair(name, value));
+  int nx = mat.getDim1();
+  int ny = mat.getDim2();
+  int **a = mat.cMatrix();
+  SEXP value = PROTECT(allocMatrix(INTSXP, nx, ny));
+  numProtected++;
+  for(int i = 0; i < nx; i++)
+    for(int j = 0; j < ny; j++)
+      INTEGER(value)[i + nx*j] = a[i][j];
+  values.push_back(make_pair(name, value));
 }
 
 void RcppResultSet::add(string name, RcppMatrix<double>& mat) {
-    int nx = mat.getDim1();
-    int ny = mat.getDim2();
-    double **a = mat.cMatrix();
-    SEXP value = PROTECT(allocMatrix(REALSXP, nx, ny));
-    numProtected++;
-    for(int i = 0; i < nx; i++)
-	for(int j = 0; j < ny; j++)
-	    REAL(value)[i + nx*j] = a[i][j];
-    values.push_back(make_pair(name, value));
+  int nx = mat.getDim1();
+  int ny = mat.getDim2();
+  double **a = mat.cMatrix();
+  SEXP value = PROTECT(allocMatrix(REALSXP, nx, ny));
+  numProtected++;
+  for(int i = 0; i < nx; i++)
+    for(int j = 0; j < ny; j++)
+      REAL(value)[i + nx*j] = a[i][j];
+  values.push_back(make_pair(name, value));
 }
 
 void RcppResultSet::add(string name, SEXP sexp, bool isProtected) {
-    values.push_back(make_pair(name, sexp));
-    if(isProtected)
-	numProtected++;
+  values.push_back(make_pair(name, sexp));
+  if(isProtected)
+    numProtected++;
 }
 
 SEXP RcppResultSet::getReturnList() {
-    int nret = values.size();
-    SEXP rl = PROTECT(allocVector(VECSXP,nret));
-    SEXP nm = PROTECT(allocVector(STRSXP,nret));
-    list<pair<string,SEXP> >::iterator iter = values.begin();
-    for(int i = 0; iter != values.end(); iter++, i++) {
-	SET_VECTOR_ELT(rl, i, iter->second);
-	SET_STRING_ELT(nm, i, mkChar(iter->first.c_str()));
-    }
-    setAttrib(rl, R_NamesSymbol, nm);
-    UNPROTECT(numProtected+2);
-    return rl;
+  int nret = values.size();
+  SEXP rl = PROTECT(allocVector(VECSXP,nret));
+  SEXP nm = PROTECT(allocVector(STRSXP,nret));
+  list<pair<string,SEXP> >::iterator iter = values.begin();
+  for(int i = 0; iter != values.end(); iter++, i++) {
+    SET_VECTOR_ELT(rl, i, iter->second);
+    SET_STRING_ELT(nm, i, mkChar(iter->first.c_str()));
+  }
+  setAttrib(rl, R_NamesSymbol, nm);
+  UNPROTECT(numProtected+2);
+  return rl;
 }
 
 #ifdef USING_QUANTLIB
 ostringstream& operator<<(ostringstream& os, const Date& d) {
-    os << d.month() << " " << d.weekday() << ", " << d.year();
-    return os;
+  os << d.month() << " " << d.weekday() << ", " << d.year();
+  return os;
 }
 #else
 
-// Dummy Date class implementation when USING_QUANTLIB is not set...
+//Dummy Date class implementation when USING_QUANTLIB is not set...
+//static char* 
+string months[]={"Jan","Feb","Mar","Apr","May","Jun",
+		       "Jul","Aug","Sep","Oct","Nov","Dec"};
 
-static char* months[] = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", 
-			       "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
-
-Date::Date(int day, int month, int year) throw(range_error) {
-    if(day < 0 || day > 31 || month < 0 || month >= 12 || year < 0)
-	throw std::range_error("Date parameters out of range");
-    _day = day, _month = month, _year = year;
+Date::Date(int day, int month, int year) throw(range_error){
+  if(day < 0 || day > 31 || month < 0 || month >= 12 || year < 0)
+    throw std::range_error("Date parameters out of range");
+  _day = day, _month = month, _year = year;
 }
 
-char* Date::getMonth() const {
-    return months[_month];
+//char* 
+string Date::getMonth() const{
+  return months[_month];
 }
 
 ostringstream& operator<<(ostringstream& os, const Date& d) {
-    os << d.getMonth() << " " << d.getDay() << ", " << d.getYear();
-    return os;
+  os<<d.getMonth()<<" "<<d.getDay()<<", "<<d.getYear();
+  return os;
 }
 #endif
 
 // This function copies the message string to R-managed memory so the
 // original C++ message object can be destroyed (when it goes out of
 // scope before returning to R).
-//
-// Thanks to Paul Roebuck for pointing out that the exception
-// object's memory will not be reclaimed if error() is called inside of
-// a catch block (due to a setjmp() call), and for suggesting the
-// work-around.
-char *copyMessageToR(const char* const mesg) {
-    char* Rmesg;
-    char* prefix = "Exception: ";
-    void* Rheap = R_alloc(std::strlen(prefix)+std::strlen(mesg)+1,sizeof(char));
-    Rmesg = static_cast<char*>(Rheap);
-    std::strcpy(Rmesg, prefix);
-    std::strcat(Rmesg, mesg);
-    return Rmesg;
+char *copyMessageToR(const char* const mesg){
+  char* Rmesg;
+  const char* prefix="Exception: ";
+  void* Rheap=R_alloc(std::strlen(prefix)+std::strlen(mesg)+1,sizeof(char));
+  Rmesg = static_cast<char*>(Rheap);
+  std::strcpy(Rmesg, prefix);
+  std::strcat(Rmesg, mesg);
+  return Rmesg;
 }
-
 
 int main(){
-    // dummy function needed for compiling on debian
+  // dummy function needed for compiling on debian
 }
-
-

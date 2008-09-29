@@ -19,10 +19,10 @@ intstudent2Boot<-function(C,nboot,simerror,alpha,...){
   qu<--quantile(results[[2]],1-alpha/2)
   qo<-quantile(results[[2]],1-alpha/2)
   for(a in 1:C@D[1]){for(b in 1:C@D[2]){
-    kiu<-c(kiu,mx[cb(a,b)]-mx[cb(a,0)]+qu*sqrt((vx[cb(a,b)]/n[cb(a,b)])+(vx[cb(a,0)]/n[cb(a,0)])))
-    kiu<-c(kiu,mx[cb(a,b)]-mx[cb(0,b)]+qu*sqrt((vx[cb(a,b)]/n[cb(a,b)])+(vx[cb(0,b)]/n[cb(0,b)])))
-    kio<-c(kio,mx[cb(a,b)]-mx[cb(a,0)]+qo*sqrt((vx[cb(a,b)]/n[cb(a,b)])+(vx[cb(a,0)]/n[cb(a,0)])))
-    kio<-c(kio,mx[cb(a,b)]-mx[cb(0,b)]+qo*sqrt((vx[cb(a,b)]/n[cb(a,b)])+(vx[cb(0,b)]/n[cb(0,b)])))
+    kiu<-c(kiu,mx[cb(a,b)]-mx[cb(a,0)]+qu*sqrt((vx[cb(a,b)]/C@n[cb(a,b)])+(vx[cb(a,0)]/C@n[cb(a,0)])))
+    kiu<-c(kiu,mx[cb(a,b)]-mx[cb(0,b)]+qu*sqrt((vx[cb(a,b)]/C@n[cb(a,b)])+(vx[cb(0,b)]/C@n[cb(0,b)])))
+    kio<-c(kio,mx[cb(a,b)]-mx[cb(a,0)]+qo*sqrt((vx[cb(a,b)]/C@n[cb(a,b)])+(vx[cb(a,0)]/C@n[cb(a,0)])))
+    kio<-c(kio,mx[cb(a,b)]-mx[cb(0,b)]+qo*sqrt((vx[cb(a,b)]/C@n[cb(a,b)])+(vx[cb(0,b)]/C@n[cb(0,b)])))
     cnames<-c(cnames,paste("(",a,",",b,")-(",a,",0)",sep=""),paste("(",a,",",b,")-(0,",b,")",sep=""))
   }}
   dauer=proc.time()[3]-dauer
@@ -49,12 +49,12 @@ intstudent3Boot<-function(C,nboot,simerror,alpha,...){
   qu<--quantile(results[[2]],1-alpha/2)
   qo<-quantile(results[[2]],1-alpha/2)
   for(a in 1:C@D[1]){for(b in 1:C@D[2]){for(c in 1:C@D[3]){
-    kiu<-c(kiu,mx[cb(a,b,c)]-mx[cb(a,b,0)]+qu*sqrt((vx[cb(a,b,c)]/n[cb(a,b,c)])+(vx[cb(a,b,0)]/n[cb(a,b,0)])))
-    kiu<-c(kiu,mx[cb(a,b,c)]-mx[cb(a,0,c)]+qu*sqrt((vx[cb(a,b,c)]/n[cb(a,b,c)])+(vx[cb(a,0,c)]/n[cb(a,0,c)])))
-    kiu<-c(kiu,mx[cb(a,b,c)]-mx[cb(0,b,c)]+qu*sqrt((vx[cb(a,b,c)]/n[cb(a,b,c)])+(vx[cb(0,b,c)]/n[cb(0,b,c)])))
-    kio<-c(kio,mx[cb(a,b,c)]-mx[cb(a,b,0)]+qo*sqrt((vx[cb(a,b,c)]/n[cb(a,b,c)])+(vx[cb(a,b,0)]/n[cb(a,b,0)])))
-    kio<-c(kio,mx[cb(a,b,c)]-mx[cb(a,0,c)]+qo*sqrt((vx[cb(a,b,c)]/n[cb(a,b,c)])+(vx[cb(a,0,c)]/n[cb(a,0,c)])))
-    kio<-c(kio,mx[cb(a,b,c)]-mx[cb(0,b,c)]+qo*sqrt((vx[cb(a,b,c)]/n[cb(a,b,c)])+(vx[cb(0,b,c)]/n[cb(0,b,c)])))
+    kiu<-c(kiu,mx[cb(a,b,c)]-mx[cb(a,b,0)]+qu*sqrt((vx[cb(a,b,c)]/C@n[cb(a,b,c)])+(vx[cb(a,b,0)]/C@n[cb(a,b,0)])))
+    kiu<-c(kiu,mx[cb(a,b,c)]-mx[cb(a,0,c)]+qu*sqrt((vx[cb(a,b,c)]/C@n[cb(a,b,c)])+(vx[cb(a,0,c)]/C@n[cb(a,0,c)])))
+    kiu<-c(kiu,mx[cb(a,b,c)]-mx[cb(0,b,c)]+qu*sqrt((vx[cb(a,b,c)]/C@n[cb(a,b,c)])+(vx[cb(0,b,c)]/C@n[cb(0,b,c)])))
+    kio<-c(kio,mx[cb(a,b,c)]-mx[cb(a,b,0)]+qo*sqrt((vx[cb(a,b,c)]/C@n[cb(a,b,c)])+(vx[cb(a,b,0)]/C@n[cb(a,b,0)])))
+    kio<-c(kio,mx[cb(a,b,c)]-mx[cb(a,0,c)]+qo*sqrt((vx[cb(a,b,c)]/C@n[cb(a,b,c)])+(vx[cb(a,0,c)]/C@n[cb(a,0,c)])))
+    kio<-c(kio,mx[cb(a,b,c)]-mx[cb(0,b,c)]+qo*sqrt((vx[cb(a,b,c)]/C@n[cb(a,b,c)])+(vx[cb(0,b,c)]/C@n[cb(0,b,c)])))
     cnames<-c(cnames,paste("(",a,",",b,",",c,")-(",a,",",b,",0)",sep=""),
               paste("(",a,",",b,",",c,")-(",a,",0,",c,")",sep=""),paste("(",a,",",b,",",c,")-(0,",b,",",c,")",sep=""))
   }}}
@@ -79,10 +79,10 @@ intbinomial2Boot<-function(C,nboot,simerror,alpha,...){
   qo<-quantile(results[[2]],1-alpha/2)
   cnames<-character(0)
   for(a in 1:C@D[1]){for(b in 1:C@D[2]){
-    kiu<-c(kiu,p[cb(a,b)]-p[cb(a,0)]+qu*sqrt((v(p[cb(a,b)])/n[cb(a,b)])+(v(p[cb(a,0)])/n[cb(a,0)])))
-    kiu<-c(kiu,p[cb(a,b)]-p[cb(0,b)]+qu*sqrt((v(p[cb(a,b)])/n[cb(a,b)])+(v(p[cb(0,b)])/n[cb(0,b)])))
-    kio<-c(kio,p[cb(a,b)]-p[cb(a,0)]+qo*sqrt((v(p[cb(a,b)])/n[cb(a,b)])+(v(p[cb(a,0)])/n[cb(a,0)])))
-    kio<-c(kio,p[cb(a,b)]-p[cb(0,b)]+qo*sqrt((v(p[cb(a,b)])/n[cb(a,b)])+(v(p[cb(0,b)])/n[cb(0,b)])))
+    kiu<-c(kiu,p[cb(a,b)]-p[cb(a,0)]+qu*sqrt((v(p[cb(a,b)])/C@n[cb(a,b)])+(v(p[cb(a,0)])/C@n[cb(a,0)])))
+    kiu<-c(kiu,p[cb(a,b)]-p[cb(0,b)]+qu*sqrt((v(p[cb(a,b)])/C@n[cb(a,b)])+(v(p[cb(0,b)])/C@n[cb(0,b)])))
+    kio<-c(kio,p[cb(a,b)]-p[cb(a,0)]+qo*sqrt((v(p[cb(a,b)])/C@n[cb(a,b)])+(v(p[cb(a,0)])/C@n[cb(a,0)])))
+    kio<-c(kio,p[cb(a,b)]-p[cb(0,b)]+qo*sqrt((v(p[cb(a,b)])/C@n[cb(a,b)])+(v(p[cb(0,b)])/C@n[cb(0,b)])))
     cnames<-c(cnames,paste("(",a,",",b,")-(",a,",0)",sep=""),paste("(",a,",",b,")-(0,",b,")",sep=""))
   }}
   dauer=proc.time()[3]-dauer
@@ -106,12 +106,12 @@ intbinomial3Boot<-function(C,nboot,simerror,alpha,...){
   qo<-quantile(results[[2]],1-alpha/2)
   cnames<-character(0)
   for(a in 1:C@D[1]){for(b in 1:C@D[2]){for(c in 1:C@D[3]){
-    kiu<-c(kiu,p[cb(a,b,c)]-p[cb(a,b,0)]+qu*sqrt((v(p[cb(a,b,c)])/n[cb(a,b,c)])+(v(p[cb(a,b,0)])/n[cb(a,b,0)])))
-    kiu<-c(kiu,p[cb(a,b,c)]-p[cb(a,0,c)]+qu*sqrt((v(p[cb(a,b,c)])/n[cb(a,b,c)])+(v(p[cb(a,0,c)])/n[cb(a,0,c)])))
-    kiu<-c(kiu,p[cb(a,b,c)]-p[cb(0,b,c)]+qu*sqrt((v(p[cb(a,b,c)])/n[cb(a,b,c)])+(v(p[cb(0,b,c)])/n[cb(0,b,c)])))
-    kio<-c(kio,p[cb(a,b,c)]-p[cb(a,b,0)]+qo*sqrt((v(p[cb(a,b,c)])/n[cb(a,b,c)])+(v(p[cb(a,b,0)])/n[cb(a,b,0)])))
-    kio<-c(kio,p[cb(a,b,c)]-p[cb(a,0,c)]+qo*sqrt((v(p[cb(a,b,c)])/n[cb(a,b,c)])+(v(p[cb(a,0,c)])/n[cb(a,0,c)])))
-    kio<-c(kio,p[cb(a,b,c)]-p[cb(0,b,c)]+qo*sqrt((v(p[cb(a,b,c)])/n[cb(a,b,c)])+(v(p[cb(0,b,c)])/n[cb(0,b,c)])))
+    kiu<-c(kiu,p[cb(a,b,c)]-p[cb(a,b,0)]+qu*sqrt((v(p[cb(a,b,c)])/C@n[cb(a,b,c)])+(v(p[cb(a,b,0)])/C@n[cb(a,b,0)])))
+    kiu<-c(kiu,p[cb(a,b,c)]-p[cb(a,0,c)]+qu*sqrt((v(p[cb(a,b,c)])/C@n[cb(a,b,c)])+(v(p[cb(a,0,c)])/C@n[cb(a,0,c)])))
+    kiu<-c(kiu,p[cb(a,b,c)]-p[cb(0,b,c)]+qu*sqrt((v(p[cb(a,b,c)])/C@n[cb(a,b,c)])+(v(p[cb(0,b,c)])/C@n[cb(0,b,c)])))
+    kio<-c(kio,p[cb(a,b,c)]-p[cb(a,b,0)]+qo*sqrt((v(p[cb(a,b,c)])/C@n[cb(a,b,c)])+(v(p[cb(a,b,0)])/C@n[cb(a,b,0)])))
+    kio<-c(kio,p[cb(a,b,c)]-p[cb(a,0,c)]+qo*sqrt((v(p[cb(a,b,c)])/C@n[cb(a,b,c)])+(v(p[cb(a,0,c)])/C@n[cb(a,0,c)])))
+    kio<-c(kio,p[cb(a,b,c)]-p[cb(0,b,c)]+qo*sqrt((v(p[cb(a,b,c)])/C@n[cb(a,b,c)])+(v(p[cb(0,b,c)])/C@n[cb(0,b,c)])))
     cnames<-c(cnames,paste("(",a,",",b,",",c,")-(",a,",",b,",0)",sep=""),
               paste("(",a,",",b,",",c,")-(",a,",0,",c,")",sep=""),paste("(",a,",",b,",",c,")-(0,",b,",",c,")",sep=""))
   }}}

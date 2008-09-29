@@ -7,15 +7,15 @@
 //Implementations of bootstrap algorithms for simultaneous confidence intervals
 //Confidence intervals based on Student's t-test in bifactorial designs
 RcppExport SEXP kritstudent2(SEXP Yr,SEXP nr,SEXP parNr){
-  int a,b,i,k=1,m; SEXP rl=0; RcppResultSet rs; RcppVector<int> parN(parNr),n(nr);
+  int a,b,i,k=0,m; SEXP rl=0; RcppResultSet rs; RcppVector<int> parN(parNr),n(nr);
   int nsim=parN(0),A=parN(1),B=parN(2),anfang[A+1][B+1];
-  RcppVector<double> Y(Yr),maxi(nsim+5),mini(nsim+5); 
+  RcppVector<double> Y(Yr),maxi(nsim),mini(nsim); 
   vector<double> X(0),Z(0),tst(A*B); double mx[A+1][B+1],vx[A+1][B+1];
   for(a=0;a<=A;++a){for(b=0;b<=B;++b){
     anfang[a][b]=0; for(i=0;i<=c2(a,b,B)-1;++i){anfang[a][b]+=n(i);}
   }}
   srand((unsigned) time(NULL));
-  while(k<=nsim){
+  while(k<=nsim-1){
     for(a=0;a<=A;++a){for(b=0;b<=B;++b){
       X.resize(0);
       for(m=0;m<=n(c2(a,b,B))-1;++m){X.push_back(Y(anfang[a][b]+m));}
@@ -32,15 +32,15 @@ RcppExport SEXP kritstudent2(SEXP Yr,SEXP nr,SEXP parNr){
 }
 //Confidence intervals based on Student's t-test in trifactorial designs
 RcppExport SEXP kritstudent3(SEXP Yr,SEXP nr,SEXP parNr){
-  int a,b,c,i,k=1,m; SEXP rl=0; RcppResultSet rs; RcppVector<int> parN(parNr),n(nr);
+  int a,b,c,i,k=0,m; SEXP rl=0; RcppResultSet rs; RcppVector<int> parN(parNr),n(nr);
   int nsim=parN(0),A=parN(1),B=parN(2),C=parN(3),anfang[A+1][B+1][C+1];
-  RcppVector<double> Y(Yr),maxi(nsim+5),mini(nsim+5); 
+  RcppVector<double> Y(Yr),maxi(nsim),mini(nsim); 
   vector<double> X(0),Z(0),tst(A*B); double mx[A+1][B+1][C+1],vx[A+1][B+1][C+1];
   for(a=0;a<=A;++a){for(b=0;b<=B;++b){for(c=0;c<=C;++c){
     anfang[a][b][c]=0; for(i=0;i<=c3(a,b,c,B,C)-1;++i){anfang[a][b][c]+=n(i);}
   }}}
   srand((unsigned) time(NULL));
-  while(k<=nsim){
+  while(k<=nsim-1){
     for(a=0;a<=A;++a){for(b=0;b<=B;++b){for(c=0;c<=C;++c){
       X.resize(0);
       for(m=0;m<=n(c3(a,b,c,B,C))-1;++m){X.push_back(Y(anfang[a][b][c]+m));}
@@ -60,9 +60,9 @@ RcppExport SEXP kritstudent3(SEXP Yr,SEXP nr,SEXP parNr){
 RcppExport SEXP kritbinomial2(SEXP pr,SEXP nr,SEXP parNr){
   int a,b,i,k=0,m; SEXP rl=0; RcppResultSet rs; RcppVector<int> parN(parNr),n(nr);
   int nsim=parN(0),A=parN(1),B=parN(2);
-  RcppVector<double> p(pr),maxi(nsim+1),mini(nsim+1); 
+  RcppVector<double> p(pr),maxi(nsim),mini(nsim); 
   vector<int> X(0); vector<double> zst(A*B); double px[A+1][B+1],vx[A+1][B+1],pm;
-  while(k<=nsim){
+  while(k<=nsim-1){
     zst.resize(0);
     for(a=1;a<=A;++a){for(b=1;b<=B;++b){
       pm=(p(c2(a,b,B))+p(c2(a,0,B)))/2;
@@ -82,9 +82,9 @@ RcppExport SEXP kritbinomial2(SEXP pr,SEXP nr,SEXP parNr){
 RcppExport SEXP kritbinomial3(SEXP pr,SEXP nr,SEXP parNr){
   int a,b,c,i,k=0,m; RcppResultSet rs; RcppVector<int> parN(parNr),n(nr);
   int nsim=parN(0),A=parN(1),B=parN(2),C=parN(3);
-  RcppVector<double> p(pr),maxi(nsim+1),mini(nsim+1); 
+  RcppVector<double> p(pr),maxi(nsim),mini(nsim); 
   vector<int> X(0); vector<double> zst(A*B*C); double px[A+1][B+1][C+1],vx[A+1][B+1][C+1],pm;
-  while(k<=nsim){
+  while(k<=nsim-1){
     zst.resize(0);
     for(a=1;a<=A;++a){for(b=1;b<=B;++b){for(c=1;c<=C;++c){
       if(p(c3(a,b,0,B,C))>=max(p(c3(a,0,c,B,C)),p(c3(0,b,c,B,C)))){

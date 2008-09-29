@@ -50,7 +50,8 @@ public:
     Date(int day, int month, int year) throw(range_error);
     int getDay() const { return _day; }
     int getYear() const { return _year; }
-    char* getMonth() const;
+    //char* 
+    string getMonth() const;
 private:
     int _day, _month, _year;
 };

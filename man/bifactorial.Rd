@@ -37,7 +37,7 @@
   the response differences between the marginal treatment groups cannot
   be resolved by the bootstrap approach. Any
   algorithm based on estimates for the nuisance parameters other than
-  the assumption that they are infinite will exceed the given type I error level (Snapinn, 1987).
+  the assumption that they are infinite will exceed the given significance level (Snapinn, 1987).
     
   The package contains the generic functions \code{mintest} and \code{margint} to test for mean differences of given numeric data
   vectors and differences in event rates for binary data

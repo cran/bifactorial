@@ -110,19 +110,19 @@ avebinomial3Boot<-function(C,nboot=NULL,simerror=NULL,...){
   for(a in 0:C@D[1]){for(b in 0:C@D[2]){for(c in 0:C@D[3]){p[cb(a,b,c)]=mean(C@data[[cb(a,b,c)]])}}}
   for(a in 1:C@D[1]){for(b in 1:C@D[2]){for(c in 0:C@D[3]){
     if(p[cb(a,b,0)]>=max(p[cb(a,0,c)],p[cb(0,b,c)])){
-      zmin[cb1(a,b,c)]<-ztest(n[cb(a,b,c)],n[cb(a,b,0)],p[cb(a,b,c)],p[cb(a,b,0)])
+      zmin[cb1(a,b,c)]<-ztest(C@n[cb(a,b,c)],C@n[cb(a,b,0)],p[cb(a,b,c)],p[cb(a,b,0)])
     }
     if(p[cb(a,0,c)]>=max(p[cb(a,b,0)],p[cb(0,b,c)])){
-      zmin[cb1(a,b,c)]<-ztest(n[cb(a,b,c)],n[cb(a,0,c)],p[cb(a,b,c)],p[cb(a,0,c)])
+      zmin[cb1(a,b,c)]<-ztest(C@n[cb(a,b,c)],C@n[cb(a,0,c)],p[cb(a,b,c)],p[cb(a,0,c)])
     }
     if(p[cb(0,b,c)]>=max(p[cb(a,b,0)],p[cb(a,0,c)])){
-      zmin[cb1(a,b,c)]<-ztest(n[cb(a,b,c)],n[cb(0,b,c)],p[cb(a,b,c)],p[cb(0,b,c)])
+      zmin[cb1(a,b,c)]<-ztest(C@n[cb(a,b,c)],C@n[cb(0,b,c)],p[cb(a,b,c)],p[cb(0,b,c)])
     }
   }}}
   zave<-mean(zmin)/sqrt(var(zmin)/(C@D[1]*C@D[2]*C@D[3]))
   if(is.null(simerror)) simerror<-9 #This is necessary for interfacing to C++
   if(is.null(nboot)) nboot<-900
-  results<-.Call("avebinomial3",n,p,c(nboot,C@D),c(zave,simerror),PACKAGE="bifactorial")
+  results<-.Call("avebinomial3",C@n,p,c(nboot,C@D),c(zave,simerror),PACKAGE="bifactorial")
   simerror<-sqrt((results[[1]]/results[[2]]^2)-(results[[1]]^2/results[[2]]^3))
   dauer<-proc.time()[3]-dauer
   new("avetest",stat=zave,p=round(results[[1]]/results[[2]],4),
