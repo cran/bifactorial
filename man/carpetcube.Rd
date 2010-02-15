@@ -55,6 +55,9 @@ cube(data,D,...)
   \item{n}{Numeric vector of sample sizes in the respective groups.}
 }
 \references{
+  Frommolt P, Hellmich M (2009): Resampling in multiple-dose factorial
+  designs. Biometrical J, 51(6), pp. 915-31
+
   Hung HMJ, Chi GYH, Lipicky RJ (1993): Testing for the existence of a
   desirable dose combination. Biometrics 49, pp. 85-94
 
@@ -63,7 +66,7 @@ cube(data,D,...)
   Medicine 19, pp. 2079-2087
 }
 \author{Peter Frommolt, University of Cologne \email{peter.frommolt@uni-koeln.de}\cr
-  \url{http://www.medizin.uni-koeln.de/kai/imsie/homepages/peter.frommolt/}
+  \url{http://portal.ccg.uni-koeln.de}
 }
 \seealso{\code{\link{bifactorial}}, \code{\link{mintest}},
   \code{\link{margint}}, \code{\link{avetest}}, \code{\link{maxtest}}}

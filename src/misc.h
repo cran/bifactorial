@@ -1,4 +1,5 @@
 #include <vector>
+using namespace std;
 double mean(vector<double>& X);
 double mean(vector<int>& X);
 int gaussklammer(double x);

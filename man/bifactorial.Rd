@@ -49,11 +49,14 @@
   available by the generic functions \code{avetest} and \code{maxtest}.
 }
 \author{Peter Frommolt, University of Cologne \email{peter.frommolt@uni-koeln.de}\cr
-  \url{http://www.medizin.uni-koeln.de/kai/imsie/homepages/peter.frommolt/}
+  \url{http://portal.ccg.uni-koeln.de}
 }
 \references{
   Bretz F, Genz A, Hothorn LA (2001): On the numerical availability of
-  multiple comparison procedures. Biometrical Journal 43/5, pp. 645-656
+  multiple comparison procedures. Biometrical J 43/5, pp. 645-656
+
+  Frommolt P, Hellmich M (2009): Resampling in multiple-dose factorial
+  designs. Biometrical J 51(6), pp. 915-31
   
   Hellmich M, Lehmacher W (2005): Closure procedures for monotone bi-factorial
   dose-response designs. Biometrics 61, pp. 269-276
@@ -65,14 +68,14 @@
   fixed-dose combination drug studies. Biometrics 53, pp. 498-503
   
   Hung HMJ (2000): Evaluation of a combination drug with multiple doses in
-  unbalanced factorial design clinical trials. Statistics in Medicine
+  unbalanced factorial design clinical trials. Statist Med
   19, pp. 2079-2087
 
   Laska EM, Meisner MJ (1989): Testing whether an identified treatment is
   best. Biometrics 45, pp. 1139-1151
 
   Snapinn SM (1987): Evaluating the efficacy of a combination
-  therapy. Statistics in Medicine 6, pp. 657-665
+  therapy. Statist Med 6, pp. 657-665
   
   Westfall PH, Young SS (1993): Resampling-based multiple testing. John
   Wiley & Sons, Inc., New York

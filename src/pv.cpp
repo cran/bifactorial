@@ -9,17 +9,18 @@
 RcppExport SEXP student2(SEXP Yr,SEXP nr,SEXP tminr,SEXP parNr,SEXP parRr){
   SEXP rl=0; srand((unsigned) time(NULL)); char* exceptionMesg=NULL;
   RcppVector<int> parN(parNr); RcppVector<double> parR(parRr),Y(Yr);
-  int a,b,i,j,k=1,m,nsim=parN(0),A=parN(1),B=parN(2),anfang[A+1][B+1];
-  double simerror=parR(0),mx[A+1][B+1];
+  int a,b,i,j,k=1,m,nsim=parN(0),A=parN(1),B=parN(2); double simerror=parR(0);
+  int ** anfang; anfang=new int *[A+1]; for(i=0;i<A+1;++i){anfang[i]=new int[B+1];}
+  double ** mx; mx=new double *[A+1]; for(i=0;i<A+1;++i){mx[i]=new double[B+1];}
   RcppVector<int> count(A*B); RcppMatrix<double> tmin(tminr); RcppMatrix<int> n(nr);
   RcppResultSet rs; vector<double> tminst(A*B),X1(0),X2(0),Z1(0),Z2(0);
   for(a=0;a<=A;++a){for(b=0;b<=B;++b){
-    anfang[a][b]=0; 
-    for(i=0;i<=(a-1);++i){for(j=0;j<=B;++j){anfang[a][b]+=n(i,j);}}
-    for(j=0;j<=b;++j){anfang[a][b]+=n(a,j);}
-    anfang[a][b]-=n(a,b);
-  }}
-  for(i=0;i<=(A*B)-1;++i){count(i)=0;}
+	  anfang[a][b]=0; 
+	  for(i=0;i<=(a-1);++i){for(j=0;j<=B;++j){anfang[a][b]+=n(i,j);}}
+	  for(j=0;j<=b;++j){anfang[a][b]+=n(a,j);}
+	  anfang[a][b]-=n(a,b);
+	}}
+	for(i=0;i<=(A*B)-1;++i){count(i)=0;}
   for(a=0;a<=A;++a){for(b=0;b<=B;++b){
     X1.resize(0); for(m=0;m<=n(a,b)-1;++m){X1.push_back(Y(anfang[a][b]+m));} 
     mx[a][b]=mean(X1);
@@ -51,8 +52,12 @@ RcppExport SEXP student2(SEXP Yr,SEXP nr,SEXP tminr,SEXP parNr,SEXP parRr){
 RcppExport SEXP student3(SEXP Yr,SEXP nr,SEXP tminr,SEXP parNr,SEXP parRr){
   SEXP rl=0; srand((unsigned) time(NULL)); char* exceptionMesg=NULL;
   RcppVector<int> parN(parNr); RcppVector<double> parR(parRr),Y(Yr);
-  int a,b,c,i,j,k=1,m,nsim=parN(0),A=parN(1),B=parN(2),C=parN(3),anfang[A+1][B+1][C+1];
-  double simerror=parR(0),mx[A+1][B+1][C+1];
+  int a,b,c,i,j,k=1,m,nsim=parN(0),A=parN(1),B=parN(2),C=parN(3);
+  int *** anfang; anfang=new int **[A+1];
+  for(i=0;i<A+1;++i){anfang[i]=new int *[B+1]; for(j=0;j<B+1;++j){anfang[i][j]=new int[C+1];}}
+  double simerror=parR(0);
+  double *** mx; mx=new double **[A+1];
+  for(i=0;i<A+1;++i){mx[i]=new double *[B+1]; for(j=0;j<B+1;++j){mx[i][j]=new double[C+1];}}
   RcppVector<int> count(A*B*C); RcppVector<double> tmin(tminr); RcppVector<int> n(nr);
   RcppResultSet rs; vector<double> tminst(A*B*C),X1(0),X2(0),Z1(0),Z2(0);
   for(a=0;a<=A;++a){for(b=0;b<=B;++b){for(c=0;c<=C;++c){
@@ -97,7 +102,8 @@ RcppExport SEXP binomial2(SEXP nr,SEXP pr,SEXP zminr,SEXP parNr,SEXP parRr){
   SEXP rl=0; srand((unsigned) time(NULL)); char* exceptionMesg=NULL;
   RcppVector<int> parN(parNr); RcppVector<double> parR(parRr); 
   RcppMatrix<int> n(nr); RcppMatrix<double> p(pr);
-  int a,b,i,k=1,l,m,lmax=0,nsim=parN(0),A=parN(1),B=parN(2),anfang[A+1][B+1];
+  int a,b,i,k=1,l,m,lmax=0,nsim=parN(0),A=parN(1),B=parN(2);
+  int ** anfang; anfang=new int *[A+1]; for(i=0;i<A+1;++i){anfang[i]=new int[B+1];}
   double p1,p2,pi,simerror=parR(0);
   RcppVector<int> count(A*B); RcppMatrix<double> zmin(zminr); RcppResultSet rs;
   vector<double> zminst(A*B); vector<int> Z1(0),Z2(0);

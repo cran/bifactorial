@@ -108,6 +108,9 @@ margint(C,test=NULL,method="bootstrap",nboot=NULL,simerror=NULL,
   \item{call}{Function call.}
 }
 \references{
+  Frommolt P, Hellmich M (2009): Resampling in multiple-dose factorial
+  designs. Biometrical J 51(6), pp. 915-31
+
   Hung HMJ, Chi GYH, Lipicky RJ (1993): Testing for the existence of a
   desirable dose combination. Biometrics 49, pp. 85-94
 
@@ -115,8 +118,7 @@ margint(C,test=NULL,method="bootstrap",nboot=NULL,simerror=NULL,
   fixed-dose combination drug studies. Biometrics 53, pp. 498-503
 
   Hung HMJ (2000): Evaluation of a combination drug with multiple doses in
-  unbalanced factorial design clinical trials. Statistics in Medicine
-  19, pp. 2079-2087
+  unbalanced factorial design clinical trials. Statist Med 19, pp. 2079-2087
 
   Hellmich M, Lehmacher W (2005): Closure procedures for monotone bi-factorial
   dose-response designs. Biometrics 61, pp. 269-276
@@ -125,13 +127,13 @@ margint(C,test=NULL,method="bootstrap",nboot=NULL,simerror=NULL,
   best. Biometrics 45, pp. 1139-1151
 
   Snapinn SM (1987): Evaluating the efficacy of a combination
-  therapy. Statistics in Medicine 6, pp. 657-665
+  therapy. Statist Med 6, pp. 657-665
   
   Westfall PH, Young SS (1993): Resampling-based multiple testing. John
   Wiley & Sons, Inc., New York
 }
 \author{Peter Frommolt, University of Cologne \email{peter.frommolt@uni-koeln.de}\cr
-  \url{http://www.medizin.uni-koeln.de/kai/imsie/homepages/peter.frommolt/}
+  \url{http://portal.ccg.uni-koeln.de}
 }
 \note{
   Performance of the implemented methods has been evaluated and compared. The min-test performs very

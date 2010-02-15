@@ -8,9 +8,13 @@
 //Confidence intervals based on Student's t-test in bifactorial designs
 RcppExport SEXP kritstudent2(SEXP Yr,SEXP nr,SEXP parNr){
   int a,b,i,k=0,m; SEXP rl=0; RcppResultSet rs; RcppVector<int> parN(parNr),n(nr);
-  int nsim=parN(0),A=parN(1),B=parN(2),anfang[A+1][B+1];
+  int nsim=parN(0),A=parN(1),B=parN(2);
+  int ** anfang; anfang=new int *[A+1];
+  for(i=0;i<A+1;++i){anfang[i]=new int[B+1];}
   RcppVector<double> Y(Yr),maxi(nsim),mini(nsim); 
-  vector<double> X(0),Z(0),tst(A*B); double mx[A+1][B+1],vx[A+1][B+1];
+  vector<double> X(0),Z(0),tst(A*B);
+  double ** mx; mx=new double *[A+1]; for(i=0;i<A+1;++i){mx[i]=new double[B+1];}
+  double ** vx; vx=new double *[A+1]; for(i=0;i<A+1;++i){vx[i]=new double[B+1];}
   for(a=0;a<=A;++a){for(b=0;b<=B;++b){
     anfang[a][b]=0; for(i=0;i<=c2(a,b,B)-1;++i){anfang[a][b]+=n(i);}
   }}
@@ -32,10 +36,16 @@ RcppExport SEXP kritstudent2(SEXP Yr,SEXP nr,SEXP parNr){
 }
 //Confidence intervals based on Student's t-test in trifactorial designs
 RcppExport SEXP kritstudent3(SEXP Yr,SEXP nr,SEXP parNr){
-  int a,b,c,i,k=0,m; SEXP rl=0; RcppResultSet rs; RcppVector<int> parN(parNr),n(nr);
-  int nsim=parN(0),A=parN(1),B=parN(2),C=parN(3),anfang[A+1][B+1][C+1];
+  int a,b,c,i,j,k=0,m; SEXP rl=0; RcppResultSet rs; RcppVector<int> parN(parNr),n(nr);
+  int nsim=parN(0),A=parN(1),B=parN(2),C=parN(3);
+  int *** anfang; anfang=new int **[A+1];
+  for(i=0;i<A+1;++i){anfang[i]=new int *[B+1]; for(j=0;j<B+1;++j){anfang[i][j]=new int[C+1];}}
   RcppVector<double> Y(Yr),maxi(nsim),mini(nsim); 
-  vector<double> X(0),Z(0),tst(A*B); double mx[A+1][B+1][C+1],vx[A+1][B+1][C+1];
+  vector<double> X(0),Z(0),tst(A*B);
+  double *** mx; mx=new double **[A+1];
+  for(i=0;i<A+1;++i){mx[i]=new double *[B+1]; for(j=0;j<B+1;++j){mx[i][j]=new double[C+1];}}
+  double *** vx; vx=new double **[A+1];
+  for(i=0;i<A+1;++i){vx[i]=new double *[B+1]; for(j=0;j<B+1;++j){vx[i][j]=new double[C+1];}}
   for(a=0;a<=A;++a){for(b=0;b<=B;++b){for(c=0;c<=C;++c){
     anfang[a][b][c]=0; for(i=0;i<=c3(a,b,c,B,C)-1;++i){anfang[a][b][c]+=n(i);}
   }}}
@@ -58,7 +68,7 @@ RcppExport SEXP kritstudent3(SEXP Yr,SEXP nr,SEXP parNr){
 }
 //Confidence intervals based on a Z statistic in bifactorial designs
 RcppExport SEXP kritbinomial2(SEXP pr,SEXP nr,SEXP parNr){
-  int a,b,i,k=0,m; SEXP rl=0; RcppResultSet rs; RcppVector<int> parN(parNr),n(nr);
+  int a,b,i,j,k=0,m; SEXP rl=0; RcppResultSet rs; RcppVector<int> parN(parNr),n(nr);
   int nsim=parN(0),A=parN(1),B=parN(2);
   RcppVector<double> p(pr),maxi(nsim),mini(nsim); 
   vector<int> X(0); vector<double> zst(A*B); double px[A+1][B+1],vx[A+1][B+1],pm;
@@ -80,10 +90,15 @@ RcppExport SEXP kritbinomial2(SEXP pr,SEXP nr,SEXP parNr){
 }
 //Confidence intervals based on a Z statistic in trifactorial designs
 RcppExport SEXP kritbinomial3(SEXP pr,SEXP nr,SEXP parNr){
-  int a,b,c,i,k=0,m; RcppResultSet rs; RcppVector<int> parN(parNr),n(nr);
+  int a,b,c,i,j,k=0,m; RcppResultSet rs; RcppVector<int> parN(parNr),n(nr);
   int nsim=parN(0),A=parN(1),B=parN(2),C=parN(3);
   RcppVector<double> p(pr),maxi(nsim),mini(nsim); 
-  vector<int> X(0); vector<double> zst(A*B*C); double px[A+1][B+1][C+1],vx[A+1][B+1][C+1],pm;
+  vector<int> X(0); vector<double> zst(A*B*C); 
+  double *** px; px=new double **[A+1];
+  for(i=0;i<A+1;++i){px[i]=new double *[B+1]; for(j=0;j<B+1;++j){px[i][j]=new double[C+1];}}
+  double *** vx; vx=new double **[A+1];
+  for(i=0;i<A+1;++i){vx[i]=new double *[B+1]; for(j=0;j<B+1;++j){vx[i][j]=new double[C+1];}}
+  double pm;
   while(k<=nsim-1){
     zst.resize(0);
     for(a=1;a<=A;++a){for(b=1;b<=B;++b){for(c=1;c<=C;++c){

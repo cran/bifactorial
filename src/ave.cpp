@@ -8,9 +8,15 @@
 //AVE-test based on Student's t-test in bifactorial designs
 RcppExport SEXP avestudent2(SEXP Yr,SEXP nr,SEXP sonstNr,SEXP sonstRr){
   RcppResultSet rs; RcppVector<int> sonstN(sonstNr); RcppMatrix<int> n(nr);
-  int a,b,i,j,k=1,l,m,nsim=sonstN(0),A=sonstN(1),B=sonstN(2),anfang[A+1][B+1],count=0;
+  int a,b,i,j,k=1,l,m,nsim=sonstN(0),A=sonstN(1),B=sonstN(2),count=0;
+  int ** anfang; double ** mx; double ** vx; double ** oldmean; double ** delta;
+  anfang=new int *[A+1]; for(i=0;i<A+1;++i){anfang[i]=new int[B+1];}
   RcppVector<double> sonstR(sonstRr),Y(Yr); vector<double> X(0),Z(0),tminst(A*B);
-  double taveSc=sonstR(0),simerror=sonstR(1),mx[A+1][B+1],vx[A+1][B+1],oldmean[A+1][B+1],delta[A+1][B+1];
+  double taveSc=sonstR(0),simerror=sonstR(1);
+  mx=new double *[A+1]; for(i=0;i<A+1;++i){mx[i]=new double[B+1];}
+  vx=new double *[A+1]; for(i=0;i<A+1;++i){vx[i]=new double[B+1];}
+  oldmean=new double *[A+1]; for(i=0;i<A+1;++i){oldmean[i]=new double[B+1];}
+  delta=new double *[A+1]; for(i=0;i<A+1;++i){delta[i]=new double[B+1];}
   for(a=0;a<=A;++a){for(b=0;b<=B;++b){
     anfang[a][b]=0; 
     for(i=0;i<=(a-1);++i){for(j=0;j<=B;++j){anfang[a][b]+=n(i,j);}}
@@ -46,8 +52,16 @@ RcppExport SEXP avestudent2(SEXP Yr,SEXP nr,SEXP sonstNr,SEXP sonstRr){
 //AVE-test based on Student's t-test in trifactorial designs
 RcppExport SEXP avestudent3(SEXP Yr,SEXP nr,SEXP sonstNr,SEXP sonstRr){
   RcppResultSet rs; RcppVector<int> sonstN(sonstNr), n(nr); RcppVector<double> sonstR(sonstRr),Y(Yr);
-  int a,b,c,i,j,k=1,l,m,nsim=sonstN(0),A=sonstN(1),B=sonstN(2),C=sonstN(3),anfang[A+1][B+1][C+1];
-  double taveSc=sonstR(0),simerror=sonstR(1),mx[A+1][B+1][C+1],vx[A+1][B+1][C+1],count=0,oldmean[A+1][B+1][C+1];
+  int a,b,c,i,j,k=1,l,m,nsim=sonstN(0),A=sonstN(1),B=sonstN(2),C=sonstN(3);
+  int *** anfang; anfang=new int **[A+1];
+  for(i=0;i<A+1;++i){anfang[i]=new int *[B+1]; for(j=0;j<B+1;++j){anfang[i][j]=new int[C+1];}}
+  double taveSc=sonstR(0),simerror=sonstR(1); int count=0;
+  double *** mx; mx=new double **[A+1];
+  for(i=0;i<A+1;++i){mx[i]=new double *[B+1]; for(j=0;j<B+1;++j){mx[i][j]=new double[C+1];}}
+  double *** vx; vx=new double **[A+1];
+  for(i=0;i<A+1;++i){vx[i]=new double *[B+1]; for(j=0;j<B+1;++j){vx[i][j]=new double[C+1];}}
+  double *** oldmean; oldmean=new double **[A+1];
+  for(i=0;i<A+1;++i){oldmean[i]=new double *[B+1]; for(j=0;j<B+1;++j){oldmean[i][j]=new double[C+1];}}
   vector<double> X(0),Z(0),tminst(A*B*C);
   for(a=0;a<=A;++a){for(b=0;b<=B;++b){for(c=0;c<=C;++c){
     anfang[a][b][c]=0; 

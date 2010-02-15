@@ -69,6 +69,9 @@ maxtest(C,test=NULL,method="bootstrap",nboot=NULL,simerror=NULL,...)
   \item{call}{The function call.}
 }
 \references{
+  Frommolt P, Hellmich M (2009): Resampling in multiple-dose factorial
+  designs. Biometrical J 51(6), pp. 915-31
+
   Hellmich M, Lehmacher W (2005): Closure procedures for monotone
   bi-factorial dose-response designs. Biometrics 61, pp. 269-276
 
@@ -79,12 +82,12 @@ maxtest(C,test=NULL,method="bootstrap",nboot=NULL,simerror=NULL,...)
   fixed-dose combination drug studies. Biometrics 53, pp. 498-503
   
   Hung HMJ (2000): Evaluation of a combination drug with multiple doses
-  in unbalanced factorial design clinical trials. Statistics in Medicine
+  in unbalanced factorial design clinical trials. Statist Med
   19, pp. 2079-2087
 }
 \author{
   Peter Frommolt, University of Cologne \email{peter.frommolt@uni-koeln.de}\cr
-  \url{http://www.medizin.uni-koeln.de/kai/imsie/peter.frommolt/}  
+  \url{http://portal.ccg.uni-koeln.de}
 }
 \note{
   The performance of the bootstrap-based approach and the method from Hung

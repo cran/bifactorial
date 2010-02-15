@@ -15,7 +15,7 @@ int gaussklammer(double x){
 }
 //Draw a binomial distributed sample/////////////////////////////////
 vector<int> binomial_sample(int n, double p){
-  double U[n];
+  double * U; U=new double[n];
   vector<int> Y(n);
   for(int m=0;m<=n-1;++m){
     U[m]=(1+(rand()%10000))*.0001;
@@ -28,8 +28,8 @@ vector<int> binomial_sample(int n, double p){
 //Draw a bootstrap sample of X///////////////////////////////////////
 vector<double> bootstrap(vector<double>& X){
   int m, n=X.size();
-  double U[n];
-  int index[n];
+  double * U; U=new double[n];
+  int * index; index=new int[n];
   vector<double> Y(n);
   for(m=0;m<=n-1;++m){
     U[m]=(1+(rand()%10000))*.0001;
