@@ -71,7 +71,9 @@ RcppExport SEXP kritbinomial2(SEXP pr,SEXP nr,SEXP parNr){
   int a,b,i,j,k=0,m; SEXP rl=0; RcppResultSet rs; RcppVector<int> parN(parNr),n(nr);
   int nsim=parN(0),A=parN(1),B=parN(2);
   RcppVector<double> p(pr),maxi(nsim),mini(nsim); 
-  vector<int> X(0); vector<double> zst(A*B); double px[A+1][B+1],vx[A+1][B+1],pm;
+  vector<int> X(0); vector<double> zst(A*B); double pm;
+  double ** px; px=new double *[A+1]; for(i=0;i<A+1;++i){px[i]=new double[B+1];}
+  double ** vx; vx=new double *[A+1]; for(i=0;i<A+1;++i){vx[i]=new double[B+1];}
   while(k<=nsim-1){
     zst.resize(0);
     for(a=1;a<=A;++a){for(b=1;b<=B;++b){

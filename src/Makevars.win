@@ -1,2 +1,2 @@
-PKG_LIBS = `Rscript -e 'Rcpp:::LdFlags()'`
-PKG_CXXFLAGS = `Rscript -e 'Rcpp:::CxxFlags()'` -I.
+PKG_LIBS = `$(R_HOME)/bin$(R_ARCH_BIN)/Rscript -e 'Rcpp:::LdFlags()'`
+PKG_CXXFLAGS = `$(R_HOME)/bin$(R_ARCH_BIN)/Rscript -e 'Rcpp:::CxxFlags()'` -I.
