@@ -1,19 +1,25 @@
 #include <iostream>
 #include <math.h>
 #include <time.h>
-#include "Rcpp.h"
-#include "misc.h"
+#include <Rcpp.h>
+#include <misc.h>
 #include <vector>
+
+using namespace Rcpp ;
+
 //Implementations of bootstrap algorithms for the min-test (Laska and Meisner, 1989)
 //min-test based on Student's t-test in bifactorial designs
 RcppExport SEXP student2(SEXP Yr,SEXP nr,SEXP tminr,SEXP parNr,SEXP parRr){
-  SEXP rl=0; srand((unsigned) time(NULL)); char* exceptionMesg=NULL;
-  RcppVector<int> parN(parNr); RcppVector<double> parR(parRr),Y(Yr);
+  srand((unsigned) time(NULL)); 
+  IntegerVector parN(parNr); 
+  NumericVector parR(parRr),Y(Yr);
   int a,b,i,j,k=1,m,nsim=parN(0),A=parN(1),B=parN(2); double simerror=parR(0);
   int ** anfang; anfang=new int *[A+1]; for(i=0;i<A+1;++i){anfang[i]=new int[B+1];}
   double ** mx; mx=new double *[A+1]; for(i=0;i<A+1;++i){mx[i]=new double[B+1];}
-  RcppVector<int> count(A*B); RcppMatrix<double> tmin(tminr); RcppMatrix<int> n(nr);
-  RcppResultSet rs; vector<double> tminst(A*B),X1(0),X2(0),Z1(0),Z2(0);
+  IntegerVector count(A*B); 
+  NumericMatrix tmin(tminr); 
+  IntegerMatrix n(nr);
+  vector<double> tminst(A*B),X1(0),X2(0),Z1(0),Z2(0);
   for(a=0;a<=A;++a){for(b=0;b<=B;++b){
 	  anfang[a][b]=0; 
 	  for(i=0;i<=(a-1);++i){for(j=0;j<=B;++j){anfang[a][b]+=n(i,j);}}
@@ -45,21 +51,27 @@ RcppExport SEXP student2(SEXP Yr,SEXP nr,SEXP tminr,SEXP parNr,SEXP parRr){
     }}
     nsim=newnsim(count,k,nsim,simerror,A*B); ++k;
   }
-  rs.add("count",count); rs.add("nsim",nsim); rl=rs.getReturnList(); 
-  return rl;
+  return List::create( 
+      _["count"] = count, 
+      _["nsim"] = nsim
+      ) ;
 }
+
 //min-test based on Student's t-test in trifactorial designs
 RcppExport SEXP student3(SEXP Yr,SEXP nr,SEXP tminr,SEXP parNr,SEXP parRr){
-  SEXP rl=0; srand((unsigned) time(NULL)); char* exceptionMesg=NULL;
-  RcppVector<int> parN(parNr); RcppVector<double> parR(parRr),Y(Yr);
+  srand((unsigned) time(NULL)); 
+  IntegerVector parN(parNr); 
+  NumericVector parR(parRr),Y(Yr);
   int a,b,c,i,j,k=1,m,nsim=parN(0),A=parN(1),B=parN(2),C=parN(3);
   int *** anfang; anfang=new int **[A+1];
   for(i=0;i<A+1;++i){anfang[i]=new int *[B+1]; for(j=0;j<B+1;++j){anfang[i][j]=new int[C+1];}}
   double simerror=parR(0);
   double *** mx; mx=new double **[A+1];
   for(i=0;i<A+1;++i){mx[i]=new double *[B+1]; for(j=0;j<B+1;++j){mx[i][j]=new double[C+1];}}
-  RcppVector<int> count(A*B*C); RcppVector<double> tmin(tminr); RcppVector<int> n(nr);
-  RcppResultSet rs; vector<double> tminst(A*B*C),X1(0),X2(0),Z1(0),Z2(0);
+  IntegerVector count(A*B*C); 
+  NumericVector tmin(tminr); 
+  IntegerVector n(nr);
+  vector<double> tminst(A*B*C),X1(0),X2(0),Z1(0),Z2(0);
   for(a=0;a<=A;++a){for(b=0;b<=B;++b){for(c=0;c<=C;++c){
     anfang[a][b][c]=0;
     for(i=0;i<=c3(a,b,c,B,C)-1;++i){anfang[a][b][c]+=n(i);}
@@ -95,17 +107,24 @@ RcppExport SEXP student3(SEXP Yr,SEXP nr,SEXP tminr,SEXP parNr,SEXP parRr){
     }}}
     nsim=newnsim(count,k,nsim,simerror,A*B*C); ++k;
   }
-  rs.add("count",count); rs.add("nsim",nsim); rl=rs.getReturnList(); return rl;
+  return List::create( 
+      _["count"] = count, 
+      _["nsim"] = nsim
+      ) ;
 }
+
 //min-test based on a Z statistic in bifactorial designs
 RcppExport SEXP binomial2(SEXP nr,SEXP pr,SEXP zminr,SEXP parNr,SEXP parRr){
-  SEXP rl=0; srand((unsigned) time(NULL)); char* exceptionMesg=NULL;
-  RcppVector<int> parN(parNr); RcppVector<double> parR(parRr); 
-  RcppMatrix<int> n(nr); RcppMatrix<double> p(pr);
-  int a,b,i,k=1,l,m,lmax=0,nsim=parN(0),A=parN(1),B=parN(2);
+  srand((unsigned) time(NULL)); 
+  IntegerVector parN(parNr); 
+  NumericVector parR(parRr); 
+  IntegerMatrix n(nr); 
+  NumericMatrix p(pr);
+  int a,b,i,k=1,nsim=parN(0),A=parN(1),B=parN(2);
   int ** anfang; anfang=new int *[A+1]; for(i=0;i<A+1;++i){anfang[i]=new int[B+1];}
   double p1,p2,pi,simerror=parR(0);
-  RcppVector<int> count(A*B); RcppMatrix<double> zmin(zminr); RcppResultSet rs;
+  IntegerVector count(A*B); 
+  NumericMatrix zmin(zminr);
   vector<double> zminst(A*B); vector<int> Z1(0),Z2(0);
   for(i=0;i<=(A*B)-1;++i){count(i)=0;}
   while(k<=nsim){
@@ -129,17 +148,22 @@ RcppExport SEXP binomial2(SEXP nr,SEXP pr,SEXP zminr,SEXP parNr,SEXP parRr){
     }}
     nsim=newnsim(count,k,nsim,simerror,A*B); ++k;
   }
-  rs.add("count",count); rs.add("nsim",nsim); rl=rs.getReturnList(); return rl;
+  return List::create( 
+      _["count"] = count, 
+      _["nsim"] = nsim
+      ) ;
 }
+
 //min-test based on a Z statistic in trifactorial designs
 RcppExport SEXP binomial3(SEXP nr,SEXP pr,SEXP zminr,SEXP parNr,SEXP parRr){
-  SEXP rl=0; srand((unsigned) time(NULL)); char* exceptionMesg=NULL;
-  RcppVector<int> parN(parNr); RcppVector<double> parR(parRr);
-  int a,b,c,i,j,k=1,m,nsim=parN(0),A=parN(1),B=parN(2),C=parN(3);
+  srand((unsigned) time(NULL)); 
+  IntegerVector parN(parNr); 
+  NumericVector parR(parRr);
+  int a,b,c,i,k=1,nsim=parN(0),A=parN(1),B=parN(2),C=parN(3);
   double p1,p2,pi,simerror=parR(0);
-  RcppVector<double> p(pr),zmin(zminr); 
-  RcppVector<int> count(A*B*C),n(nr);
-  RcppResultSet rs; vector<double> zminst(A*B*C);
+  NumericVector p(pr),zmin(zminr); 
+  IntegerVector count(A*B*C),n(nr);
+  vector<double> zminst(A*B*C);
   vector<int> X1(0),X2(0),Z1(0),Z2(0);
   for(i=0;i<=(A*B*C)-1;++i){count(i)=0;}
   while(k<=nsim){
@@ -168,5 +192,8 @@ RcppExport SEXP binomial3(SEXP nr,SEXP pr,SEXP zminr,SEXP parNr,SEXP parRr){
   }}}
   nsim=newnsim(count,k,nsim,simerror,A*B*C); ++k;
   }
-  rs.add("count",count); rs.add("nsim",nsim); rl=rs.getReturnList(); return rl;
+  return List::create( 
+      _["count"] = count, 
+      _["nsim"] = nsim
+      ) ;
 }

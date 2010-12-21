@@ -12,7 +12,7 @@ double max(double x, double y);
 double maximalwert(vector<double>& X);
 double minimalwert(vector<double>& X);
 double betrag(double x);
-int newnsim(RcppVector<int>& count, int k, int nsim,double simerror,int D);
+int newnsim(Rcpp::IntegerVector& count, int k, int nsim,double simerror,int D);
 int c2(int a,int b,int B);
 int c20(int a,int b,int B);
 int c3(int a,int b,int c,int B,int C);

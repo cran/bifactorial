@@ -1,17 +1,21 @@
 #include <iostream>
 #include <math.h>
 #include <time.h>
-#include "Rcpp.h"
-#include "misc.h"
+#include <Rcpp.h>
+#include <misc.h>
 #include <vector>
+
+using namespace Rcpp ;
+
 //Implementations of bootstrap algorithms for the AVE-test (Hung, 2000)
 //AVE-test based on Student's t-test in bifactorial designs
 RcppExport SEXP avestudent2(SEXP Yr,SEXP nr,SEXP sonstNr,SEXP sonstRr){
-  RcppResultSet rs; RcppVector<int> sonstN(sonstNr); RcppMatrix<int> n(nr);
-  int a,b,i,j,k=1,l,m,nsim=sonstN(0),A=sonstN(1),B=sonstN(2),count=0;
+  IntegerVector sonstN(sonstNr); 
+  NumericMatrix n(nr);
+  int a,b,i,j,k=1,m,nsim=sonstN(0),A=sonstN(1),B=sonstN(2),count=0;
   int ** anfang; double ** mx; double ** vx; double ** oldmean; double ** delta;
   anfang=new int *[A+1]; for(i=0;i<A+1;++i){anfang[i]=new int[B+1];}
-  RcppVector<double> sonstR(sonstRr),Y(Yr); vector<double> X(0),Z(0),tminst(A*B);
+  NumericVector sonstR(sonstRr),Y(Yr); vector<double> X(0),Z(0),tminst(A*B);
   double taveSc=sonstR(0),simerror=sonstR(1);
   mx=new double *[A+1]; for(i=0;i<A+1;++i){mx[i]=new double[B+1];}
   vx=new double *[A+1]; for(i=0;i<A+1;++i){vx[i]=new double[B+1];}
@@ -47,12 +51,16 @@ RcppExport SEXP avestudent2(SEXP Yr,SEXP nr,SEXP sonstNr,SEXP sonstRr){
     }}
     ++k;
   }
-  rs.add("count",count); rs.add("nsim",nsim); return rs.getReturnList();
+  return List::create( 
+      _["count"] = count, 
+      _["nsim"]  = nsim 
+  ) ;
 }
+
 //AVE-test based on Student's t-test in trifactorial designs
 RcppExport SEXP avestudent3(SEXP Yr,SEXP nr,SEXP sonstNr,SEXP sonstRr){
-  RcppResultSet rs; RcppVector<int> sonstN(sonstNr), n(nr); RcppVector<double> sonstR(sonstRr),Y(Yr);
-  int a,b,c,i,j,k=1,l,m,nsim=sonstN(0),A=sonstN(1),B=sonstN(2),C=sonstN(3);
+  IntegerVector sonstN(sonstNr), n(nr); NumericVector sonstR(sonstRr),Y(Yr);
+  int a,b,c,i,j,k=1,m,nsim=sonstN(0),A=sonstN(1),B=sonstN(2),C=sonstN(3);
   int *** anfang; anfang=new int **[A+1];
   for(i=0;i<A+1;++i){anfang[i]=new int *[B+1]; for(j=0;j<B+1;++j){anfang[i][j]=new int[C+1];}}
   double taveSc=sonstR(0),simerror=sonstR(1); int count=0;
@@ -100,13 +108,19 @@ RcppExport SEXP avestudent3(SEXP Yr,SEXP nr,SEXP sonstNr,SEXP sonstRr){
     }}
     ++k;
   }
-  rs.add("count",count); rs.add("nsim",nsim); return rs.getReturnList();
+  return List::create( 
+      _["count"] = count, 
+      _["nsim"] = nsim 
+      ); 
 }
+
 //AVE-test based on a Z statistic in bifactorial designs
 RcppExport SEXP avebinomial2(SEXP nr,SEXP pr,SEXP sonstNr,SEXP sonstRr){
-  RcppResultSet rs; RcppVector<int> sonstN(sonstNr); RcppMatrix<int> n(nr);
-  RcppVector<double> sonstR(sonstRr); RcppMatrix<double> p(pr); 
-  int a,b,i,j,k=1,l,m,nsim=sonstN(0),A=sonstN(1),B=sonstN(2);
+  IntegerVector sonstN(sonstNr); 
+  IntegerMatrix n(nr);
+  NumericVector sonstR(sonstRr); 
+  NumericMatrix p(pr); 
+  int a,b,k=1,nsim=sonstN(0),A=sonstN(1),B=sonstN(2);
   double zave=sonstR(0),simerror=sonstR(1),count=0,p1,p2;
   vector<double> zminst(A*B); vector<int> Z1(0),Z2(0);
   while(k<=nsim){
@@ -130,12 +144,17 @@ RcppExport SEXP avebinomial2(SEXP nr,SEXP pr,SEXP sonstNr,SEXP sonstRr){
     }}
     ++k;
   }
-  rs.add("count",count); rs.add("nsim",nsim); return rs.getReturnList();
+  return List::create( 
+      _["count"] = count, 
+      _["nsim"] = nsim
+  ); 
 }
+
 //AVE-test based on a Z statistic in trifactorial designs
 RcppExport SEXP avebinomial3(SEXP nr,SEXP pr,SEXP sonstNr,SEXP sonstRr){
-  RcppResultSet rs; RcppVector<int> sonstN(sonstNr), n(nr); RcppVector<double> sonstR(sonstRr), p(pr); 
-  int a,b,c,i,j,k=1,l,m,nsim=sonstN(0),A=sonstN(1),B=sonstN(2),C=sonstN(3);
+  IntegerVector sonstN(sonstNr), n(nr); 
+  NumericVector sonstR(sonstRr), p(pr); 
+  int a,b,c,k=1,nsim=sonstN(0),A=sonstN(1),B=sonstN(2),C=sonstN(3);
   double zave=sonstR(0),simerror=sonstR(1),count=0,p1,p2,pi;
   vector<double> zminst(A*B*C); vector<int> Z1(0),Z2(0);
   while(k<=nsim){
@@ -166,5 +185,7 @@ RcppExport SEXP avebinomial3(SEXP nr,SEXP pr,SEXP sonstNr,SEXP sonstRr){
     }}
     ++k;
   }
-  rs.add("count",count); rs.add("nsim",nsim); return rs.getReturnList();
+  return List::create(
+      _["count"] = count, 
+      _["nsim"] = nsim ) ;
 }

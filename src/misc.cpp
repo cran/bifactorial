@@ -6,7 +6,7 @@ using namespace std;
 #include <valarray> 
 using std::valarray;
 #include <time.h>
-#include "Rcpp.h"
+#include <Rcpp.h>
 //Determine largest integer smaller than x///////////////////////////
 int gaussklammer(double x){
   int k=0;
@@ -78,12 +78,12 @@ double summe(vector<int>& X){
 //Determine the minimum of x and y///////////////////////////////////
 double min(double x, double y){
   if(x<=y){ return x; }
-  if(y<=x){ return y; }
+  return y;
 }
 //Determine the maximum of x and y///////////////////////////////////
 double max(double x, double y){
   if(x>=y){ return x; }
-  if(y>=x){ return y; }
+  return y;
 }
 //Determine the minimum of the data X////////////////////////////////
 double minimalwert(vector<double>& X){
@@ -109,8 +109,9 @@ double betrag(double x){
   else{return -x;}
 }
 //Calculate number of simulations according to prespecified standard error
-int newnsim(RcppVector<int>& count,int k, int nsim,double simerror,int D){
-  vector<double> abst(D); int l,lmax;
+int newnsim(Rcpp::IntegerVector& count,int k, int nsim,double simerror,int D){
+  vector<double> abst(D);
+  int l,lmax=0;
   if(simerror!=9 & k==900){
     for(l=0;l<=D-1;++l){abst[l]=betrag(double(count(l))-double(450));}
     for(l=0;l<=D-1;++l){if(abst[l]==minimalwert(abst)){lmax=l;}}//Der Fehler wird für p=.5 maximal
