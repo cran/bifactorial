@@ -33,7 +33,7 @@ setMethod("show",signature("cube"),function(object){
     }}}
   }
   for(a in 0:object@D[1]){for(b in 0:object@D[2]){for(c in 0:object@D[3]){
-    cat("(",a,",",b,",",c,")\t\t",n[cb(a,b,c)],"\t\t",round(mean(object@data[[cb(a,b,c)]]),3),"\t\t",stdev[cb(a,b,c)],"\n",sep="")
+    cat("(",a,",",b,",",c,")\t\t",object@n[cb(a,b,c)],"\t\t",round(mean(object@data[[cb(a,b,c)]]),3),"\t\t",stdev[cb(a,b,c)],"\n",sep="")
   }}}
   cat("\n")
 })
